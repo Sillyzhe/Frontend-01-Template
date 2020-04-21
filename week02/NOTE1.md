@@ -35,6 +35,6 @@
 		- `Number` IEEE754 Double Float
 	- `Keywords`（关键字）
 ---
-#### BOM
+#### 
 
 ---
