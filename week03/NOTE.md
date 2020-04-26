@@ -1,1 +1,16 @@
-# 每周总结可以写在这里
+###Expression——表达式
+- Grammar
+	- Grammar Tree vs Priority
+	- Left hand side & Right hand side
+- Runtime
+	- Type Convertion
+	- Reference
+- Expressions
+	- Member
+		- a.b
+		- a[b]
+		- foo`string`
+		- super.b
+		- super['b']
+		- new.target
+		- new Foo()
