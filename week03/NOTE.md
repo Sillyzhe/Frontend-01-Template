@@ -14,3 +14,10 @@
 		- super['b']
 		- new.target
 		- new Foo()
+	- New
+		- new Foo 
+	- Call
+		- foo()
+		- super()
+		- foo()['b']
+		- foo().b
