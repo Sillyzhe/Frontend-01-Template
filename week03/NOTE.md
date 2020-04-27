@@ -16,8 +16,44 @@
 		- new Foo()
 	- New
 		- new Foo 
+	- Updata
+		- a++
+		- a--
+		- --a
+		- ++a
 	- Call
 		- foo()
 		- super()
 		- foo()['b']
 		- foo().b
+	- Unary
+		- delete a.b
+		- void foo()
+		- typeof a
+		- +a
+		- -a
+		- ~a
+		- !a
+		- await a  
+	- Exponental
+		- **
+	- Multiplicative
+		- */%
+	- Additive
+		- +-
+	- Shift
+		- << >> >>>
+	- Relationship
+		- < > <+ => instanceof in
+	- Equality
+		- ==
+		- !=
+		- ===
+		- !==
+	- Bitwise
+		- & ^ |
+	- Logical
+		- &&
+		- ||
+	- Conditional
+		- ? :
