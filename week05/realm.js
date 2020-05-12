@@ -127,6 +127,7 @@ var globalProperties = [
     "Reflect"
 ]
 let set = new Set()
+let setArray=new Set()
 var queue = [];
 for (var p of globalProperties) {
     queue.push({
@@ -136,13 +137,17 @@ for (var p of globalProperties) {
 }
 
 let current;
-
+let obj={}
 while (queue.length) {
     current = queue.shift()
     console.log(current.path.join('.'))
     if (set.has(current.object)) {
         continue
     }
+    if(setArray.has(current.path.join('.'))){
+      continue
+    }
+    setArray.add(current.path.join('.'))
     set.add(current.object);
     let proto = Object.getPrototypeOf(current.object);
     if (proto) {
