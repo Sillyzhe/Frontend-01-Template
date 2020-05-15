@@ -1,5 +1,4 @@
 const net = require('net');
-const parser=require('./parser')
 // net.connect({
 //     address: 'localhost',
 //     port: 8088,
@@ -79,23 +78,6 @@ ${this.bodyText}
         }, () => {
           connection.write(this.toString())
 
-<<<<<<< HEAD
-                })
-            }
-            connection.on('data', (data) => {
-                parser.receive(data.toString())
-                // console.log(parser.statusLine)
-                // console.log(parser.headers)
-                // console.log(parser.current)
-                // resolve(data.toString())
-                connection.end()
-            })
-            connection.on('err', (err) => {
-                reject(err.toString())
-                connection.end()
-            })
-=======
->>>>>>> 916bf0e16dc3afc0c2cd141a1ea45f176e3a6221
         })
       }
       connection.on('data', (data) => {
@@ -155,42 +137,6 @@ class ResponseParser {
     for (let i = 0; i < string.length; i++) {
       this.receiveChar(string.charAt(i));
     }
-<<<<<<< HEAD
-    receiveChar(char) {
-        if (this.current === this.WAITING_STATUS_LINE) {
-            if (char === "\r") {
-                this.current = this.WAITING_HEADER_NAME;
-            } else {
-                this.statusLine += (char)
-            }
-            if (char === "\n") {
-                this.current = this.WAITING_HEADER_NAME;
-                // console.log('2')
-            }
-        } else if (this.current === this.WAITING_HEADER_NAME) {
-            if (char === ":") {
-                this.current = this.WAITING_HEADER_SPACE;
-            } else if (char === "\r") {
-                this.current = this.WAITING_BODY;
-            } else {
-                this.headerName += char;
-            }
-        } else if (this.current === this.WAITING_HEADER_SPACE) {
-            if (char === ' ') {
-                this.current = this.WAITING_HEADER_VALUE;
-            }
-        } else if (this.current === this.WAITING_HEADER_VALUE) {
-            if (char === '\r') {
-                this.current = this.WAITING_HEADER_LINE_END;
-                this.headers[this.headerName] = this.headerValue;
-            } else {
-                this.headerValue += char
-            }
-        } else if (this.current === this.WAITING_HEADER_LINE_END) {
-            if (char === "\n") {
-                this.current = this.WAITING_HEADER_NAME;
-            }
-=======
   }
   receiveChar(char) {
     if (this.current === this.WAITING_STATUS_LINE) {
@@ -211,7 +157,6 @@ class ResponseParser {
         this.current = this.WAITING_HEADER_LINE_BLOCK_END;
         if (this.headers["Transfer-Encoding"] === "chunked") {
           this.bodyParser = new TrunkedBodyParser()
->>>>>>> 916bf0e16dc3afc0c2cd141a1ea45f176e3a6221
         }
       } else {
         this.headerName += char;
@@ -293,24 +238,6 @@ class TrunkedBodyParser {
   }
 }
 void async function () {
-<<<<<<< HEAD
-    let request = new Request({
-        method: "POST",
-        host: "127.0.0.1",
-        port: "8088",
-        path: "/",
-        headers: {
-            "X-Foo2": "customed",
-        },
-        body: {
-            name: "winter"
-        }
-    })
-    let response = await request.send();
-    let dom = parser.parserHTML(response.body)
-    console.log('response', response)
-    console.log(dom)
-=======
   let request = new Request({
     method: "POST",
     host: "127.0.0.1",
@@ -325,5 +252,4 @@ void async function () {
   })
   let response = await request.send();
   console.log('response', response)
->>>>>>> 916bf0e16dc3afc0c2cd141a1ea45f176e3a6221
 }();
