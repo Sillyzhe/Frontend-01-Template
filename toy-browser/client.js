@@ -1,4 +1,5 @@
 const net = require('net');
+const parser=require('./parser')
 // net.connect({
 //     address: 'localhost',
 //     port: 8088,
@@ -82,9 +83,9 @@ ${this.bodyText}
             }
             connection.on('data', (data) => {
                 parser.receive(data.toString())
-                console.log(parser.statusLine)
-                console.log(parser.headers)
-                console.log(parser.current)
+                // console.log(parser.statusLine)
+                // console.log(parser.headers)
+                // console.log(parser.current)
                 // resolve(data.toString())
                 connection.end()
             })
@@ -131,7 +132,7 @@ class ResponseParser {
             }
             if (char === "\n") {
                 this.current = this.WAITING_HEADER_NAME;
-                console.log('2')
+                // console.log('2')
             }
         } else if (this.current === this.WAITING_HEADER_NAME) {
             if (char === ":") {
@@ -184,5 +185,7 @@ void async function () {
         }
     })
     let response = await request.send();
+    let dom = parser.parserHTML(response.body)
     console.log('response', response)
+    console.log(dom)
 }();
