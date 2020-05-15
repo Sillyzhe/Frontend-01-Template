@@ -213,8 +213,8 @@ class TrunkedBodyParser {
           this.current = this.WAITING_LENGTH_LINE_END;
         }
       } else {
-        this.length *= 10;
-        this.length += char.charCodeAt(0) - '0'.charCodeAt(0);
+        this.length *= 16;
+        this.length += parseInt(char, 16);
       }
     } else if (this.current === this.WAITING_LENGTH_LINE_END) {
       if (char === "\n") {
@@ -239,20 +239,20 @@ class TrunkedBodyParser {
   }
 }
 void async function () {
-    let request = new Request({
-        method: "POST",
-        host: "127.0.0.1",
-        port: "8088",
-        path: "/",
-        headers: {
-            "X-Foo2": "customed",
-        },
-        body: {
-            name: "winter"
-        }
-    })
-    let response = await request.send();
-    let dom = parser.parserHTML(response.body)
-    console.log('response', response)
-    console.log(dom)
+  let request = new Request({
+    method: "POST",
+    host: "127.0.0.1",
+    port: "8088",
+    path: "/",
+    headers: {
+      "X-Foo2": "customed",
+    },
+    body: {
+      name: "winter"
+    }
+  })
+  let response = await request.send();
+  let dom = parser.parserHTML(response.body)
+  // console.log('response', response.body)
+  // console.log(dom)
 }();
