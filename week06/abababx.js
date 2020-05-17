@@ -23,7 +23,9 @@ function start(c) {
 function foundA(c) {
     if (c == "b") {
         ++countB
-        return foundX
+        if(countA==3&&countB==3){
+            return foundX
+        }
     } else {
         return start(c)
     }
@@ -38,7 +40,7 @@ function foundA(c) {
 // }
 
 function foundX(c) {
-    if(countA==3&&countB==3&&c=="x"){
+    if(c=="x"){
     // if (c == "x") {
         return end
     } else {
