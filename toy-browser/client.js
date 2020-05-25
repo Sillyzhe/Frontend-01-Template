@@ -1,5 +1,6 @@
 const net = require('net');
-const parser=require('./parser')
+const parser = require('./parser')
+const render = require('./render')
 // net.connect({
 //     address: 'localhost',
 //     port: 8088,
@@ -253,6 +254,9 @@ void async function () {
   })
   let response = await request.send();
   let dom = parser.parserHTML(response.body)
+  let viewport = images(800, 600);
+  render(viewport, dom.children[0].children[3].children[1])
+  viewport.save("viewport.jpg")
   // console.log('response', response.body)
   // console.log(dom)
 }();

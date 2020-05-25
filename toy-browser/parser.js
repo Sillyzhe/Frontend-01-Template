@@ -315,7 +315,7 @@ function selfClosingStartTag(c) {
 
 function addCSSRules(text) {
   var ast = css.parse(text);
-  console.log(JSON.stringify(ast, null, "  "))
+  // console.log(JSON.stringify(ast, null, "  "))
   rules.push(...ast.stylesheet.rules)
 }
 
@@ -343,12 +343,12 @@ function computeCSS(element) {
       matched = true
     }
     if (matched) {
-      console.log("Element", element)
+      // console.log("Element", element)
 
       var sp = specificity(rule.selectors[0]);
       var computedStyle = element.computedStyle;
       for (var declaration of rule.declarations) {
-        if (!computedStyle(declaration)) {
+        if (!computedStyle[declaration.property]) {
           computedStyle[declaration.property] = {}
         }
         if (!computedStyle[declaration.property].specificity) {
@@ -360,7 +360,7 @@ function computeCSS(element) {
           computedStyle[declaration.property].specificity = sp
         }
       }
-      console.log(element.computedStyle)
+      // console.log(element.computedStyle)
     }
   }
 
