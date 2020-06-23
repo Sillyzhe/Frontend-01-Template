@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        div {
+            background: gray;
+            border-radius: 50px;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin-right: 30px;
+        }
+
+        .green.light {
+            background: green;
+        }
+
+        .red.light {
+            background: red;
+        }
+
+        .yellow.light {
+            background: yellow;
+        }
+    </style>
+    <div class="green"></div>
+    <div class="red"></div>
+    <div class="yellow"></div>
+    <button id="next">按钮</button>
+    <script>
+        // settimeout
+        function green() {
+            var lights = document.getElementsByTagName('div')
+            for (var i = 0; i < 3; i++) {
+                lights[i].classList.remove('light')
+                document.getElementsByClassName('green')[0].classList.add('light')
+
+            }
+        }
+
+        function red() {
+            var lights = document.getElementsByTagName('div')
+            for (var i = 0; i < 3; i++) {
+                lights[i].classList.remove('light')
+                document.getElementsByClassName('red')[0].classList.add('light')
+
+            }
+        }
+
+        function yellow() {
+            var lights = document.getElementsByTagName('div')
+            for (var i = 0; i < 3; i++) {
+                lights[i].classList.remove('light')
+                document.getElementsByClassName('yellow')[0].classList.add('light')
+
+            }
+        }
+
+
+        function sleep(t) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, t);
+            })
+        }
+
+        function happen(element, eventName) {
+            return new Promise((resove, reject) => {
+                element.addEventListener(eventName, resove, {
+                    once: true
+                })
+            })
+        }
+
+        // promise
+
+        // function go(){
+        //     green()
+        //     sleep(1000).then(()=>{
+        //         yellow()
+        //         return sleep(200)
+        //     }).then(()=>{
+        //         red()
+        //         return sleep(500)
+        //     }).then(go())
+        // }
+
+        // async awiat 
+        // async function go() {
+        //     while (true) {
+        //         green()
+        //         await happen(document.getElementById('next'),'click')
+        //         // await sleep(500)
+        //         yellow()
+        //         await happen(document.getElementById('next'),'click')
+        //         // await sleep(200)
+        //         red()
+        //         await happen(document.getElementById('next'),'click')
+        //         // await sleep(300)
+        //     }
+        // }
+
+
+        // generator
+
+        function* go() {
+            while (true) {
+
+                green()
+                yield sleep(1000);
+                yellow()
+                yield sleep(200);
+                red()
+                yield sleep(500);
+            }
+        }
+
+        function run(iterator) {
+            let {
+                value,
+                down
+            } = iterator.next()
+            if (down) return
+            value.then(() => {
+                run(iterator)
+            })
+        }
+
+        function co(generator) {
+            return function () {
+                return run(generator())
+            }
+        }
+        go = co(go)
+
+        // async function* g() {
+        //     let i = 0;
+        //     while (true) {
+        //         await sleep(1000)
+        //         yield i++
+        //     }
+        // }
+        // for await (let v of g()) {
+        //     console.log(v)
+        // }
+    </script>
+</body>
+
+</html>
