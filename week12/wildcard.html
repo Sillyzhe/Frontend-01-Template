@@ -1,0 +1,65 @@
+<script>
+    /* 
+      * 相对KMP，增加了通配符 * ? 
+      * * 如何处理
+      * ？如何处理
+    */
+    function find(source, pattern) {
+      let startCount = 0;
+      for (let i = 0; i < pattern.length; i++) {
+        if (pattern[i] === '*') {
+          startCount ++;
+        }
+      }
+      console.log('startCount: ', startCount);
+      if (startCount === 0) {
+        for (let i = 0; i < pattern.length; i++) {
+          if (pattern[i] !== source[i] && pattern[i] !== '?') {
+            return false;
+          }
+        }
+        return;
+      }
+  
+      let i = 0;
+      let lastIndex = 0;
+      for (i = 0; pattern[i] !== '*'; i++) {
+        if (pattern[i] !== source[i] && pattern[i] !== '?') {
+          return false;
+        }
+      }
+  
+      lastIndex = i;
+      console.log('lastIndex: ', lastIndex);
+  
+      for (let p = 0; p < startCount - 1; p++) {
+        i++;
+        let subPattern = '';
+        while(pattern[i] !== '*') {
+          subPattern += pattern[i];
+          i++;
+        }
+        // console.log(subPattern);
+        let reg = new RegExp(subPattern.replace(/\?/g, "[\\s\\S]"), 'g');
+        
+        reg.lastIndex = lastIndex;
+        // console.log(reg.exec(source));
+        reg.exec(source);
+        lastIndex = reg.lastIndex;
+        // console.log('lastIndex: ', lastIndex);
+      }
+  
+      for (let j = 0; j <= source.length - lastIndex && pattern[pattern.length - j] !== '*'; j++) {
+        console.log(pattern.length, pattern.length - j, source.length - j)
+        if (pattern[pattern.length - j] !== source[source.length - j] &&
+            pattern[pattern.length - j] !== '?') {
+          return false;
+        }
+      }
+      return true;
+    }
+  
+    console.log(find('abcabcabx', 'a*b*bx'))
+    console.log(find('abcabcabx', 'a*b*bx*c'))
+    console.log(find('abcabcabxcd', 'a*b*?x*c'))
+  </script>

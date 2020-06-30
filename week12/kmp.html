@@ -1,0 +1,46 @@
+<script>
+    // KMP相似性分析
+    function find(source, pattern) {
+      let table = new Array(pattern.length).fill(0);
+  
+      let k = 0;
+      for (let j = 1; j < pattern.length; j++) {
+        if(pattern[j] === pattern[k]) {
+          k ++;
+        } else {
+          k = 0;
+        }
+        table[j] = k;
+      }
+      // console.log('table: ', table);
+  
+      let j = 0;
+      for (let i = 0; i < source.length; i++) {
+        // console.log('source: ', source[i], pattern[j], j);
+        if (source[i] === pattern[j]) {
+          j++;
+        } else {
+          // console.log(table[j - 1], source[i], pattern[j])
+          while(source[i] !== pattern[j] && j > 0) {
+            // console.log('j: ', j, i, source[i] , pattern[j]);
+            j = table[j - 1]; 
+          }
+          // console.log(j);
+          if (source[i] === pattern[j]) {
+            j++;
+          } else {
+            j = 0;
+          }
+        }
+        if (j === pattern.length) {
+          return true;
+        }
+      }
+      return false;
+    }
+  
+    console.log(`'xabcxxy', 'xy'`, find('xabcxxy', 'xy'))
+    console.log(`'abcabcabx', 'abcabx'`, find('abcabcabx', 'abcabx'))
+    console.log(`'abcababcabcabx', 'abcabx'`, find('abcababcabcabx', 'abcabx'))
+    console.log(`'abcababcabcabx', 'abcabx'`, find('abcababcabcabx', 'abcabd'))
+  </script>
