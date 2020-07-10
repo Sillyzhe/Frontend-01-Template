@@ -11,10 +11,9 @@ function createElement(Cls, attributes, ...children){
         });
     }
 
-
-
     for(let name in attributes) {
-        o.setAttribute(name, attributes[name]);
+        // o.setAttribute(name, attributes[name]);
+        o[name] = attributes[name]
     }
 
     //console.log(children);
@@ -39,6 +38,7 @@ class Text {
     }
 }
 
+// 代理
 class Wrapper{
     constructor(type){
         this.children = [];
@@ -67,19 +67,27 @@ class Wrapper{
 class MyComponent {
     constructor(config){
         this.children = [];
+        this.attributes=new Map();
+        this.properties=new Map();
     }
 
     setAttribute(name, value) { //attribute
-        this.root.setAttribute(name, value);
+        // this.root.setAttribute(name, value);
+        this.attributes.set(name,value)
     }
 
     appendChild(child){
         this.children.push(child);
     }
 
+    set title(value){
+      this.properties.set("title",value)
+    }
+
     render(){
-        
         return <article>
+             {/* <h1>{this.attributes.get("title")}</h1> */}
+             <h2>{this.properties.get("title")}</h2>
             <header>I'm a header</header>
             {this.slot}
             <footer>I'm a footer</footer>
@@ -89,7 +97,7 @@ class MyComponent {
     mountTo(parent){
         this.slot = <div></div>
         for(let child of this.children){
-            debugger;
+            // debugger;
             this.slot.appendChild(child)
         }
         this.render().mountTo(parent)
@@ -107,11 +115,11 @@ class MyComponent {
         <div></div>
     </div>*/
 
-let component = <MyComponent>
+let component = <MyComponent title="I'm a title">
     <div>text text text</div>
 </MyComponent>
     
-
+component.title="I'm a title2"
 component.mountTo(document.body);
 /*
 var component = createElement(
