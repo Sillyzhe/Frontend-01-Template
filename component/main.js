@@ -1,6 +1,8 @@
 
 function createElement(Cls, attributes, ...children){
-    
+    console.log('Cls',Cls)
+    console.log('attributes',attributes)
+    console.log('children',children)
     let o;
 
     if(typeof Cls === "string") {
@@ -100,6 +102,7 @@ class MyComponent {
             // debugger;
             this.slot.appendChild(child)
         }
+        console.log('this',this)
         this.render().mountTo(parent)
 
     }
