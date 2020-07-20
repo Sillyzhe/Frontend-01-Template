@@ -1,41 +1,84 @@
 export class Timeline {
   constructor() {
     this.animations = [];
-  }
-  tick() {
-    let t = Date.now() - this.startTime;
-    for (let animation of this.animations) {
-      if (t > animation.duration + animation.delay) {
-        continue;
+    this.requestId = null;
+    this.state = "inited";
+    this.tick = () => {
+      let t = Date.now() - this.startTime;
+      let animations = this.animations.filter(
+        (animation) => !animation.finished
+      );
+      for (let animation of this.animations) {
+        let {
+          object,
+          property,
+          template,
+          start,
+          end,
+          timingFunction,
+          duration,
+          delay,
+          startTime,
+        } = animation;
+
+        let progression = timingFunction((t - delay - startTime) / duration); //0-1之间的数
+        if (t > duration + delay + startTime) {
+          progression = 1;
+          animation.finished = true;
+        }
+        let value = start + progression * (end - start); //value就是根据progression算出的当前值
+
+        object[property] = template(value);
       }
-      let {
-        object,
-        property,
-        template,
-        start,
-        end,
-        timingFunction,
-        duration,
-        delay,
-      } = animation;
-
-      let progression = timingFunction((t - delay) / duration); //0-1之间的数
-
-      let value = start + progression * (end - start);
-
-      object[property] = template(value);
-    }
-
-    requestAnimationFrame(() => this.tick());
+      if (animations.length) {
+        this.requestId = requestAnimationFrame(this.tick);
+      }
+    };
   }
 
-  start() {
-    this.startTime = Date.now();
+  resume() {
+    if (this.state !== "paused") return;
+    this.state = "playing";
+    this.startTime += Date.now() - this.pauseTime;
     this.tick();
   }
 
-  add(animation) {
+  pause() {
+    if (this.state !== "playing") return;
+    this.state = "paused";
+    this.pauseTime = Date.now();
+    if (this.requestId != null) {
+      cancelAnimationFrame(this.requestId);
+    }
+  }
+
+  start() {
+    if (this.state !== "inited") return;
+    this.state = "playing";
+    this.startTime = Date.now();
+    this.tick();
+  }
+  restart() {
+    if (this.state === "playing") {
+      this.pause();
+    }
+    this.animations = [];
+    this.requestId = null;
+    this.start = "palying";
+    this.startTime = Date.now();
+    this.pauseTime = null;
+    this.tick();
+  }
+
+  add(animation, addTime) {
     this.animations.push(animation);
+    animation.finished = false;
+    if (this.state === "playing") {
+      animation.startTime =
+        addTime != void 0 ? addTime : Date.now() - this.startTime;
+    } else {
+      animation.startTime = addTime != void 0 ? addTime : 0;
+    }
   }
 }
 
